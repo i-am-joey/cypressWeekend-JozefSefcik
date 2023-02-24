@@ -38,7 +38,7 @@ describe("Task One ", () => {
     });
   });
 
-  it.only("All sections are correctly loaded", () => {
+  it("All sections are correctly loaded", () => {
     cy.visit(
       Cypress.env("url") + "/en/airport/bcn/barcelona-el-prat-barcelona-spain/"
     );
@@ -58,11 +58,34 @@ describe("Task One ", () => {
     cy.get(".gwXwTN").should("be.visible");
   });
 
-  it("Destination in search should be France", () => {});
+  it("Destination in search should be Barcelona", () => {
+    cy.visit(
+      Cypress.env("url") + "/en/airport/bcn/barcelona-el-prat-barcelona-spain/"
+    );
+    cy.get('[data-test="CookiesPopup-Accept"]').click();
 
-  it("H1 element should have correct text", () => {});
+    cy.get('[data-test="SearchFieldItem-origin"]').should('be.visible')
+    cy.get('[data-test="PlacePickerInput-origin"] > [data-test="PlacePickerInputPlace"]').should('be.visible').and('contain', 'Barcelona BCN')
+  });
 
-  it("Click on first picture card in popular cities section", () => {});
+  it("H1 element should have correct text", () => {
+    cy.visit(
+      Cypress.env("url") + "/en/airport/bcn/barcelona-el-prat-barcelona-spain/"
+    );
+    cy.get('[data-test="CookiesPopup-Accept"]').click();
+
+    cy.get('.Herostyled__Title-sc-j7sblu-2').should('be.visible').and('contain.text', 'Barcelona–El Prat (BCN)')
+  });
+
+  it.only("Click on first picture card in popular cities section", () => {
+    cy.visit(
+      Cypress.env("url") + "/en/airport/bcn/barcelona-el-prat-barcelona-spain/"
+    );
+    cy.get('[data-test="CookiesPopup-Accept"]').click();
+
+    cy.get(':nth-child(1) > [data-test="PictureCard"] > [data-test="PictureCardContent"]').click()
+    cy.url().should('eq','https://www.kiwi.com/en/search/results/barcelona-spain/ibiza-spain/2023-04-19')
+  });
 
   it("Verify rederiction to correct page in search/results", () => {});
 
