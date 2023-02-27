@@ -5,8 +5,10 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-    env: {
-      url: "https://www.kiwi.com",
-    },
+    experimentalStudio: true,
+  },
+
+  env: {
+    url: "https://www.kiwi.com",
   },
 });

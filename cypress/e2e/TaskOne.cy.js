@@ -1,16 +1,14 @@
 /// <reference types="cypress" />
 
 describe("Task One ", () => {
-  beforeEach(() => {
-    cy.visit(
-      Cypress.env("url") + "/en/airport/bcn/barcelona-el-prat-barcelona-spain/"
-    )
-    cy.get('[data-test="CookiesPopup-Accept"]').click();
-  })
   it("part one", () => {
     //visit BCN page
+    cy.visit(
+      Cypress.env("url") + "/en/airport/bcn/barcelona-el-prat-barcelona-spain/"
+    );
+    cy.get('[data-test="CookiesPopup-Accept"]').click();
 
-     cy.url().should(
+    cy.url().should(
       "eq",
       "https://www.kiwi.com/en/airport/bcn/barcelona-el-prat-barcelona-spain/"
     );
@@ -55,28 +53,25 @@ describe("Task One ", () => {
       "eq",
       "https://www.kiwi.com/en/search/results/barcelona-spain/ibiza-spain/2023-04-19"
     );
-  });
-
-  it("Part two", () => {
     //Verify rederiction to correct page in search/results
-
-    cy.get('[data-test="LandingSearchButton"]').click();
     cy.url().should(
       "eq",
-      "https://www.kiwi.com/en/search/tiles/barcelona-el-prat-barcelona-spain/anywhere/anytime"
+      "https://www.kiwi.com/en/search/results/barcelona-spain/ibiza-spain/2023-04-19"
     );
 
     //Add one additional luggage in filter
-    cy.get('[data-test="SearchFormFilters-button-bags"]').click();
     cy.get(
       '[data-test="BagsPopup-checked"] > .LabeledStepperstyled__StepperWrap-sc-oo4v0a-4 > .StepperStateless__StyledStepper-sc-1nz7kdj-0 > .iVyNrG > .ButtonPrimitiveContent__StyledButtonPrimitiveContent-sc-1nfggrh-0'
     ).click();
 
     //Verify that new results are loaded
     cy.url().should("contain", "?bags=0.1-");
+
+    // continue on reservation form
+    cy.get(
+      '.ButtonPrimitive__StyledButtonPrimitive-sc-j8pavp-0 fJaKqA', { timeout: 10000 } 
+    ).click();
+
+    cy.url().should("contain", "en/booking?activeStep=");
   });
-
-  it("Continue in reservation process from first choice", () => {});
-
-  it("Verify redirection to booking page", () => {});
 });
