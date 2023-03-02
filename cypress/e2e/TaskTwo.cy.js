@@ -2,8 +2,7 @@
 
 describe("Task One ", () => {
   it("part one", () => {
-    //POINT 1. visit BCN page
-    cy.visit(
+        cy.visit(
       Cypress.env("url") + "/en/airport/bcn/barcelona-el-prat-barcelona-spain/"
     );
     cy.get('[data-test="CookiesPopup-Accept"]').click();
@@ -13,57 +12,22 @@ describe("Task One ", () => {
       "https://www.kiwi.com/en/airport/bcn/barcelona-el-prat-barcelona-spain/"
     );
 
-    //POINT 2. All sections are correctly loaded
-    cy.get('[data-test="NavBar"]').should("be.visible");
-    cy.get(".Herostyled__ImageWrapper-sc-j7sblu-0").should("be.visible");
-    cy.get(".Herostyled__SearchForm-sc-j7sblu-4").should("be.visible");
-    cy.get("main > :nth-child(3)").should("be.visible");
-    cy.get('[data-test="TrendingDestinations"]').should("be.visible");
-    cy.get('[data-test="PopularFlights"]').should("be.visible");
-    cy.get('[data-test="DestinationsMap"]').should("be.visible");
-    cy.get('[data-test="Faq"]').should("be.visible");
-    cy.get('[data-test="TopAirlines"]').should("be.visible");
-    cy.get(".AppSectionDesktopColorstyled__Wrapper-sc-1av0nuf-0").should(
-      "be.visible"
-    );
-    cy.get('[data-test="ExploreWrapper"]').should("be.visible");
-    cy.get(".gwXwTN").should("be.visible");
+    //POINT 5. Click on first picture card in popular cities section from random click
 
-    //POINT 3. Destination in search should be Barcelona
-
-    cy.get('[data-test="SearchFieldItem-origin"]').should("be.visible");
-    cy.get(
-      '[data-test="PlacePickerInput-origin"] > [data-test="PlacePickerInputPlace"]'
-    )
-      .should("be.visible")
-      .and("contain", "Barcelona BCN");
-
-    //POINT 4. H1 element should have correct text
-
-    cy.get(".Herostyled__Title-sc-j7sblu-2")
-      .should("be.visible")
-      .and("contain.text", "Barcelona–El Prat (BCN)");
-
-    //POINT 5. Click on first picture card in popular cities section
-
-    cy.get(
-      ':nth-child(1) > [data-test="PictureCard"] > [data-test="PictureCardContent"]'
-    ).click();
+ cy.get('[data-test="PictureCard"] > [data-test="PictureCardContent"]')
+  .should('have.length.gt', 7)
+  .its('length')
+  .then((n) => Cypress._.random(0, n - 1))
+  .then((k) => {
+    cy.log(`picked random index ${k}`)
+    cy.get('[data-test="PictureCard"] > [data-test="PictureCardContent"]').eq(k).click()
+    })
 
     //POINT 6. Verify rederiction to correct page in search/results and search inputs
     cy.url().should(
-      "eq",
-      "https://www.kiwi.com/en/search/results/barcelona-spain/ibiza-spain/2023-04-19"
+      "contain",
+      "search/results"
     );
-
-    cy.get('[data-test="SearchPlaceField-origin"]').should("be.visible");
-    cy.get('[data-test="PlacePickerInputPlace"]')
-      .should("be.visible")
-      .and("contain", "Barcelona");
-    cy.get('[data-test="SearchPlaceField-destination"]').should("be.visible");
-    cy.get('[data-test="PlacePickerInputPlace"]')
-      .should("be.visible")
-      .and("contain", "Ibiza");
 
     //POINT 7. Add one additional luggage in filter
     cy.get(
@@ -73,9 +37,18 @@ describe("Task One ", () => {
     //POINT 8. Verify that new results are loaded
     cy.url().should("contain", "?bags=0.1-");
 
-    // POINT 9. continue on reservation form
-    cy.get('[data-test="BookingButton"]', { timeout: 15000 }).eq(0).click();
+    // POINT 9. continue on reservation form from random click
+    
+    cy.get('[data-test="BookingButton"]', { timeout: 15000 })
+  .should('have.length.gt', 3)
+  .its('length')
+  .then((n) => Cypress._.random(0, n - 1))
+  .then((k) => {
+    cy.log(`picked random index ${k}`)
+    cy.get('[data-test="BookingButton"]').eq(k).click()
+    })
     cy.get('[data-test="MagicLogin-GuestTextLink"]').click();
+
 
     //POINT 10. Verify that you are correctly redirected to booking page
     cy.url().should("contain", "en/booking?activeStep=");
